@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPA Suplementos</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f8ff;
+      color: #333;
+    }
+    header {
+      background-color: #0055aa;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .subtitle {
+      font-size: 16px;
+      margin-top: 5px;
+    }
+    nav {
+      background-color: #004080;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 10px;
+    }
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .menu-links {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+    }
+    .menu-links a {
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      border-top: 1px solid #0066cc;
+    }
+    .menu-links a:hover {
+      background-color: #0066cc;
+    }
+    .container {
+      padding: 10px;
+    }
+    .category-title {
+      font-size: 20px;
+      color: #0055aa;
+      margin: 20px 0 10px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .product {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 8px;
+    }
+    .add-btn {
+      background-color: #0055aa;
+      color: white;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 12px;
+      max-width: 300px;
+      z-index: 999;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    #cart.minimized {
+      width: 70px;
+      height: 70px;
+      overflow: hidden;
+      padding: 10px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #cart.minimized h3,
+    #cart.minimized ul,
+    #cart.minimized p,
+    #cart.minimized #checkout {
+      display: none;
+    }
+    .cart-icon {
+      font-size: 28px;
+      color: white;
+    }
+    .min-toggle {
+      background: #0055aa;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+    }
+    .cart-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: red;
+      color: white;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #cart ul {
+      list-style: none;
+      padding: 0;
+    }
+    #cart ul li {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #checkout {
+      background-color: #00bb00;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .remove-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 2px 6px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>SPA Suplementos</h1>
+    <div class="subtitle">Sua evolução começa aqui.</div>
+  </header>
+
+  <nav>
+    <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
+    <div class="menu-links" id="menu">
+      <a href="#creatina">Creatinas</a>
+      <a href="#whey-concentrado">Whey Concentrado</a>
+      <a href="#whey-isolado">Whey Isolado</a>
+      <a href="#termogenico">Termogênicos</a>
+      <a href="#cafeina">Cafeína</a>
+      <a href="#Pre-Treino">Pré Treino</a>
+      <a href="https://wa.me/5521965748366" target="_blank">Contato via WhatsApp</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="creatina">
+      <div class="category-title">Creatinas</div>
+      <div class="product-grid" id="creatina-list"></div>
+    </div>
+    <div id="whey-concentrado">
+      <div class="category-title">Whey Concentrado</div>
+      <div class="product-grid" id="whey-concentrado-list"></div>
+    </div>
+    <div id="whey-isolado">
+      <div class="category-title">Whey Isolado</div>
+      <div class="product-grid" id="whey-isolado-list"></div>
+    </div>
+    <div id="termogenico">
+      <div class="category-title">Termogênicos</div>
+      <div class="product-grid" id="termogenico-list"></div>
+    </div>
+    <div id="cafeina">
+      <div class="category-title">Cafeína</div>
+      <div class="product-grid" id="cafeina-list"></div>
+    </div>
+    <div id="Pre-Treino">
+      <div class="category-title">Pré Treino</div>
+      <div class="product-grid" id="Pre-Treino-list"></div>
+    </div>
+  </div>
+
+  <div id="cart" class="minimized">
+    <button class="min-toggle" onclick="toggleCart()">
+      <i class="fas fa-shopping-cart cart-icon"></i>
+      <div class="cart-count" id="cart-count">0</div>
+    </button>
+    <h3>Carrinho</h3>
+    <ul id="cart-items"></ul>
+    <p>Total: R$ <span id="total">0.00</span></p>
+    <button id="checkout">Finalizar no WhatsApp</button>
+  </div>
+
+  <script>
+    const menu = document.getElementById('menu');
+    const cartItems = document.getElementById('cart-items');
+    const totalEl = document.getElementById('total');
+    const cartBox = document.getElementById('cart');
+    const cartCountEl = document.getElementById('cart-count');
+    let cart = [];
+
+    function toggleMenu() {
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    const products = [
+      { name: "Creatina Integral Medica 300g", price: 119.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/1.jpg" },
+      { name: "Creatina Dux Human Health 300g", price: 119.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/2.jpg" },
+      { name: "Creatina Black Skull 300g", price: 99.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/3.jpg" },
+      { name: "⁠Creatina Max titanium 300g", price: 109.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/4.jpg" },
+      { name: "⁠Creatina Probiotica 300g", price: 99.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/5.jpg" },
+      { name: "Creatina FTW 300g", price: 99.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/8.jpg" },
+      { name: "Creatina nutrata sachê 300g", price: 99.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/7.jpg" },
+      { name: "Creatina FTW 150g", price: 59.90, category: "creatina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+
+      { name: "Whey 100% Concentrado Integral Medica 900g", price: 129.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/9.jpg" },
+      { name: "⁠Femini Whey Max titanium 900g", price: 119.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/10.jpg" },
+      { name: " ⁠⁠Whey 100% concentrado Max titanium refil 900g", price: 124.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/16.jpg" },
+      { name: "Whey 100% concentrado Black skull pote 900g", price: 104.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/12.jpg" },
+      { name: "Whey Nutrata refil 900g ", price: 119.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/13.jpg" },
+      { name: "Whey New millen pote 900g", price: 119.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/14.jpg" },
+      { name: "⁠⁠Whey Probiotica refil 900g", price: 119.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/15.jpg" },
+      { name: "Whey Gourmet DR Peanut 900g", price: 149.90, category: "whey-concentrado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+
+      { name: "Whey ISO-X pote 900g", price: 99.90, category: "whey-isolado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Whey Isolado Max Titanium 900g", price: 229.90, category: "whey-isolado", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+
+      { name: "Thermo Flame Black Skull 60 comprimidos", price: 35.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Thermo Integral médica 60 cápsulas", price: 49.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Thermo BodyAction 60 cápsulas", price: 49.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Thermo Diabo verde 60 cápsulas", price: 69.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Thermo Abdômen Bodyaction 120 comprimidos", price: 89.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Kimera 60 comprimidos", price: 69.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "⁠Clear Buter Under Labz 250ml", price: 49.90, category: "termogenico", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+
+      { name: "Pure caffeine MD 60 cápsulas", price: 42.90, category: "cafeina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Cafeína BodyAction 30 cápsulas", price: 29.90, category: "cafeina", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+
+      { name: "Nuclear Rush 100g", price: 59.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Nuclear Rush 60caps", price: 79.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Panic Adaptogen 300g", price: 134.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Dila PUMP 150g", price: 69.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "C4 Beta Pump 225g", price: 89.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Horus Max Titanium 300g", price: 129.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Horus Max Titanium 150g", price: 79.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/no%20image.jpg" },
+      { name: "Diabo verde 300g", price: 119.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/19.jpg" },
+      { name: "Diabo verde 150g", price: 79.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/20.jpg" },
+      { name: "Huger Integralmedica 160g", price: 99.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/28.jpg" },
+      { name: "Warzone under labz 150g", price: 79.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/27.jpg" },
+      { name: "Focus MD 159g", price: 87.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/26.jpg" },
+      { name: "BOPE", price: 59.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/21.jpg" },
+      { name: "Ultimate Iron fight 120g", price: 79.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/25.jpg" },
+      { name: "Night Train Max titanium 300g", price: 109.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/24.jpg" },
+      { name: "Évora Darkness 150g", price: 79.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/23.jpg" },
+      { name: "Insane Clown 350g", price: 149.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/Thiagodyaz/meu-site-teste4/main/foto1.jpg" },
+      { name: "Psicho Killer 294g", price: 149.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/22.jpg" },
+      { name: "Crazy Clown 300g", price: 149.90, category: "Pre-Treino", image: "https://raw.githubusercontent.com/spasuplementosrj/loja/refs/heads/main/Image/18.jpg" },
+
+    ];
+
+    products.forEach((product, index) => {
+      const div = document.createElement('div');
+      div.className = 'product';
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>R$ ${product.price.toFixed(2)}</p>
+        <button class="add-btn" onclick="addToCart(${index})">Adicionar</button>
+      `;
+      document.getElementById(`${product.category}-list`).appendChild(div);
+    });
+
+    function addToCart(index) {
+      const product = products[index];
+      cart.push(product);
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${item.name} - R$ ${item.price.toFixed(2)}</span>
+          <button class="remove-btn" onclick="removeFromCart(${index})">X</button>
+        `;
+        cartItems.appendChild(li);
+        total += item.price;
+      });
+      totalEl.textContent = total.toFixed(2);
+      cartCountEl.textContent = cart.length;
+    }
+
+    document.getElementById('checkout').addEventListener('click', () => {
+      if (cart.length === 0) return alert('Seu carrinho está vazio!');
+      const message = cart.map(p => `${p.name} - R$ ${p.price.toFixed(2)}`).join('\n');
+      const total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+      const whatsappMessage = encodeURIComponent(`Olá! Gostaria de finalizar meu pedido:\n\n${message}\n\nTotal: R$ ${total}`);
+      window.open(`https://wa.me/5521965748366?text=${whatsappMessage}`, '_blank');
+    });
+
+    function toggleCart() {
+      cartBox.classList.toggle('minimized');
+    }
+  </script>
+</body>
+</html>
